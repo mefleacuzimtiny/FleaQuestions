@@ -1,51 +1,7 @@
 import random
+from math import log, ceil
 
-symbols = {
-	2 : {
-		0 : "0",
-		1 : "1"
-	},
-	8 : {
-		0 : "0",
-		1 : "1",
-		2 : "2",
-		3 : "3",
-		4 : "4",
-		5 : "5",
-		6 : "6",
-		7 : "7"
-	},
-	10 : {
-		0 : "0",
-		1 : "1",
-		2 : "2",
-		3 : "3",
-		4 : "4",
-		5 : "5",
-		6 : "6",
-		7 : "7",
-		8 : "6",
-		9 : "9"
-	},
-	16 : {
-		0 : "0",
-		1 : "1",
-		2 : "2",
-		3 : "3",
-		4 : "4",
-		5 : "5",
-		6 : "6",
-		7 : "7",
-		8 : "6",
-		9 : "9",
-		10 : "A",
-		11 : "B",
-		12 : "C",
-		13 : "D",
-		14 : "E",
-		15 : "F"
-	}
-}
+symbols = ['0', '1', '2', '3', '4', '5', '6', '7', '6', '9', 'A', 'B', 'C', 'D', 'E', 'F']
 
 system_name = {
 	2 : "Bin",
@@ -57,37 +13,36 @@ system_name = {
 def keepDecimal(value: float) -> float:
 	return value - int(value)
 
-def convertSys(value: float, base: int, precision: int) -> str:
+def convertSys(value: float, base: int, prec_ans: int) -> str:
 	whole: str = ""
 	fractional: str = ""
 
 	val = int(value)
 	while (val > 0):
-		whole = symbols[base][val % base] + whole
+		whole = symbols[val % base] + whole
 		val = val // base
 
 	val = keepDecimal(value)
-	i = 0
-	while (i < precision):
+	for i in range(prec_ans):
 		val = base * keepDecimal(val)
-		fractional += symbols[base][int(val)]
-		i += 1
+		fractional += symbols[int(val)]
 
 	if fractional == "":
 		return whole
 	return whole + "." + fractional
 
 while True:
-	precision = random.randint(0, 5)
 	random_float = random.uniform(0, 100)
-	number_systems = random.sample([2, 8, 10, 16], 2)
-	system_names = [system_name[number_systems[0]], system_name[number_systems[1]]]
+	bases = random.sample([2, 8, 10, 16], 2)
+	system_names = [system_name[bases[0]], system_name[bases[1]]]
+	prec_ans = random.randint(0, 8)
+	prec_ques = int(ceil(prec_ans * log(bases[1]) / log(bases[0])))
 
-	converted = convertSys(random_float, number_systems[0], precision+2)
-	answer = convertSys(random_float, number_systems[1], precision)
+	converted = convertSys(random_float, bases[0], prec_ques)
+	answer = convertSys(random_float, bases[1], prec_ans)
 
 	# print(f"Random Float: {random_float}")
-	print(f"Precision: {precision}")
+	print(f"Precision: {prec_ans}")
 	print(f"Convert {system_names[0]} {converted} to {system_names[1]}")
 
 	toCheck = input("Enter your answer: ")
