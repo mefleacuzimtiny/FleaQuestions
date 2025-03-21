@@ -78,8 +78,8 @@ def convertSys(value: float, base: int, precision: int) -> str:
 	return whole + "." + fractional
 
 while True:
-	random_float = random.uniform(0, 100)
 	precision = random.randint(0, 5)
+	random_float = random.uniform(0, 100)
 	number_systems = random.sample([2, 8, 10, 16], 2)
 	system_names = [system_name[number_systems[0]], system_name[number_systems[1]]]
 
